@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="图书馆自习室信息与数据展示中心 - 图书馆三维立体模型">
+  <title>三维展示 | 图书馆自习室信息与数据展示中心</title>
+  <link rel="stylesheet" href="../libs/bootstrap.min.css">
+  <link rel="stylesheet" href="../libs/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="../index.html">
+      <span class="brand-badge"><i class="bi bi-book-half"></i></span>
+      <span>自习室信息中心<span class="brand-sub">CAMPUS STUDY ROOM</span></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="展开导航菜单">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="../index.html"><i class="bi bi-speedometer2"></i>数据总览</a></li>
+        <li class="nav-item"><a class="nav-link" href="../rooms.html"><i class="bi bi-search"></i>自习室查询</a></li>
+        <li class="nav-item"><a class="nav-link" href="../manage.html"><i class="bi bi-calendar2-check"></i>预约管理</a></li>
+        <li class="nav-item"><a class="nav-link active" href="scene.html"><i class="bi bi-badge-3d"></i>三维展示</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-end gap-2">
+        <div>
+          <h1><i class="bi bi-badge-3d text-primary"></i> 图书馆三维立体模型</h1>
+          <p>用 Three.js 把 3 座图书馆建成三维立体模型：每一层用一个立方体表示，立方体颜色代表该楼层的座位占用率，点击立方体即可查看该楼层详情。</p>
+        </div>
+        <div class="text-lg-end">
+          <div class="fs-13 text-muted-2">数据更新时间</div>
+          <div class="fw-bold" id="updateTime">--</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container py-4">
+    <div id="alertHost" class="mb-3"></div>
+
+    <div class="row g-3">
+      <!-- ============================ 三维画布 ============================ -->
+      <div class="col-12 col-lg-8">
+        <div class="card-soft h-100">
+          <div class="card-head">
+            <h2><i class="bi bi-box text-primary"></i> 立体模型视图</h2>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-brand btn-sm" id="btnResetView">
+                <i class="bi bi-aspect-ratio"></i> 复位视角
+              </button>
+              <button type="button" class="btn btn-outline-brand btn-sm" id="btnRotate">
+                <i class="bi bi-arrow-repeat"></i> 自动旋转
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="sceneWrap">
+              <div class="scene-legend">
+                <div class="lg-row"><span class="lg-swatch" style="background:#22c55e;"></span> 空闲 &lt;50%</div>
+                <div class="lg-row"><span class="lg-swatch" style="background:#3b82f6;"></span> 适中 50-70%</div>
+                <div class="lg-row"><span class="lg-swatch" style="background:#f59e0b;"></span> 较满 70-85%</div>
+                <div class="lg-row"><span class="lg-swatch" style="background:#ef4444;"></span> 紧张 ≥85%</div>
+              </div>
+              <div class="scene-tooltip" id="sceneTip"></div>
+              <div class="scene-hint">
+                <i class="bi bi-hand-index-thumb"></i> 鼠标左键拖动旋转 · 滚轮缩放 · 右键平移 · 点击立方体查看楼层详情
+              </div>
+            </div>
+            <div class="text-center fs-12 text-muted-2 mt-2" id="sceneStatus">正在初始化三维场景…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================ 侧边信息 ============================ -->
+      <div class="col-12 col-lg-4">
+        <div class="card-soft">
+          <div class="card-head">
+            <h2><i class="bi bi-building text-primary"></i> 楼层占用率一览</h2>
+            <span class="fs-12 text-muted-2">点击可定位</span>
+          </div>
+          <div class="card-body" id="buildingList">
+            <div class="skeleton sk-line" style="width:60%;"></div>
+            <div class="skeleton sk-line"></div>
+            <div class="skeleton sk-line" style="width:80%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer">
+  <div class="container">
+    <div class="foot-line">
+      <div>图书馆自习室信息与数据展示中心 · 软件开发综合实践期末大作业</div>
+      <div>三维引擎：<code>Three.js r128</code> · 数据来源：<code>data/rooms.json</code></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../libs/jquery.min.js"></script>
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../libs/three.min.js"></script>
+<script src="../libs/OrbitControls.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/scene.js"></script>
+</body>
+</html>

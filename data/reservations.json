@@ -1,0 +1,17 @@
+{
+  "updateTime": "2026-10-07 20:30",
+  "reservations": [
+    { "id": "R20261007001", "roomId": "A401", "roomName": "主馆四层·考研专区", "student": "李明", "studentNo": "20230101", "date": "2026-10-07", "start": "18:00", "end": "22:00", "seat": "A-24", "status": "使用中" },
+    { "id": "R20261007002", "roomId": "C301", "roomName": "教学楼C座·24小时自习室", "student": "王雨欣", "studentNo": "20230142", "date": "2026-10-07", "start": "19:00", "end": "23:00", "seat": "C-08", "status": "使用中" },
+    { "id": "R20261007003", "roomId": "A301", "roomName": "主馆三层·安静自习区", "student": "赵一鸣", "studentNo": "20230215", "date": "2026-10-07", "start": "14:00", "end": "18:00", "seat": "F-31", "status": "已完成" },
+    { "id": "R20261007004", "roomId": "A203", "roomName": "主馆二层·研讨间 A", "student": "陈思远", "studentNo": "20230277", "date": "2026-10-07", "start": "09:00", "end": "11:00", "seat": "讨论位-03", "status": "已完成" },
+    { "id": "R20261007005", "roomId": "B201", "roomName": "东区馆二层·电子阅览室", "student": "刘佳怡", "studentNo": "20230318", "date": "2026-10-07", "start": "20:00", "end": "22:00", "seat": "E-12", "status": "已预约" },
+    { "id": "R20261007006", "roomId": "A201", "roomName": "主馆二层·综合自习区", "student": "孙浩然", "studentNo": "20230390", "date": "2026-10-07", "start": "12:00", "end": "14:00", "seat": "B-45", "status": "已取消" },
+    { "id": "R20261008001", "roomId": "A101", "roomName": "主馆一层·开放自习区", "student": "周晓彤", "studentNo": "20230412", "date": "2026-10-08", "start": "08:00", "end": "12:00", "seat": "A-10", "status": "已预约" },
+    { "id": "R20261008002", "roomId": "A202", "roomName": "主馆二层·电子阅览室", "student": "吴子豪", "studentNo": "20230455", "date": "2026-10-08", "start": "13:00", "end": "17:00", "seat": "E-06", "status": "已预约" },
+    { "id": "R20261008003", "roomId": "C301", "roomName": "教学楼C座·24小时自习室", "student": "郑雅文", "studentNo": "20230501", "date": "2026-10-08", "start": "00:00", "end": "06:00", "seat": "C-15", "status": "已预约" },
+    { "id": "R20261008004", "roomId": "B301", "roomName": "东区馆三层·小组研讨区", "student": "冯立", "studentNo": "20230522", "date": "2026-10-08", "start": "15:00", "end": "18:00", "seat": "讨论位-07", "status": "已预约" },
+    { "id": "R20261008005", "roomId": "A301", "roomName": "主馆三层·安静自习区", "student": "许静", "studentNo": "20230588", "date": "2026-10-08", "start": "09:00", "end": "13:00", "seat": "F-02", "status": "已预约" },
+    { "id": "R20261008006", "roomId": "C202", "roomName": "教学楼C座·自习教室 202", "student": "黄子轩", "studentNo": "20230620", "date": "2026-10-08", "start": "18:00", "end": "22:00", "seat": "D-18", "status": "已预约" }
+  ]
+}

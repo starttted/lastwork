@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="图书馆自习室信息与数据展示中心 - 预约记录管理">
+  <title>预约管理 | 图书馆自习室信息与数据展示中心</title>
+  <link rel="stylesheet" href="libs/bootstrap.min.css">
+  <link rel="stylesheet" href="libs/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-badge"><i class="bi bi-book-half"></i></span>
+      <span>自习室信息中心<span class="brand-sub">CAMPUS STUDY ROOM</span></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="展开导航菜单">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-speedometer2"></i>数据总览</a></li>
+        <li class="nav-item"><a class="nav-link" href="rooms.html"><i class="bi bi-search"></i>自习室查询</a></li>
+        <li class="nav-item"><a class="nav-link active" href="manage.html"><i class="bi bi-calendar2-check"></i>预约管理</a></li>
+        <li class="nav-item"><a class="nav-link" href="three-d/scene.html"><i class="bi bi-badge-3d"></i>三维展示</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-end gap-2">
+        <div>
+          <h1><i class="bi bi-calendar2-check text-primary"></i> 预约记录管理</h1>
+          <p>对自习室座位预约记录进行查询、新增、修改和删除。修改结果保存在浏览器本地存储（localStorage）中，刷新页面不会丢失。</p>
+        </div>
+        <div class="text-lg-end">
+          <div class="fs-13 text-muted-2">初始数据更新时间</div>
+          <div class="fw-bold" id="updateTime">--</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container py-4">
+    <div id="alertHost" class="mb-3"></div>
+
+    <!-- ============================ 统计条 ============================ -->
+    <section class="row g-3 mb-3" aria-label="预约统计">
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="bi bi-journal-text"></i></div>
+          <div class="stat-meta"><div class="stat-value" id="mTotal">--</div><div class="stat-label">预约记录总数</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon g-ok"><i class="bi bi-calendar-check"></i></div>
+          <div class="stat-meta"><div class="stat-value text-success" id="mBooked">--</div><div class="stat-label">已预约</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon g-warn"><i class="bi bi-hourglass-split"></i></div>
+          <div class="stat-meta"><div class="stat-value" id="mUsing">--</div><div class="stat-label">使用中</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon g-accent"><i class="bi bi-pencil-square"></i></div>
+          <div class="stat-meta"><div class="stat-value" id="mDirty" style="font-size:18px;">初始数据</div><div class="stat-label">当前数据来源</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ 操作与筛选 ============================ -->
+    <section class="card-soft mb-3">
+      <div class="card-head">
+        <h2><i class="bi bi-funnel text-primary"></i> 查询与操作</h2>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-brand btn-sm" id="btnAdd">
+            <i class="bi bi-plus-lg"></i> 新增预约
+          </button>
+          <button type="button" class="btn btn-outline-brand btn-sm" id="btnRestore">
+            <i class="bi bi-arrow-counterclockwise"></i> 恢复初始数据
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-5">
+            <label class="form-label" for="mKw">关键词</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="bi bi-search text-muted-2"></i></span>
+              <input type="search" class="form-control border-start-0" id="mKw"
+                     placeholder="姓名 / 学号 / 自习室 / 预约编号" maxlength="20">
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label" for="mStatus">预约状态</label>
+            <select class="form-select" id="mStatus">
+              <option value="">全部状态</option>
+              <option value="已预约">已预约</option>
+              <option value="使用中">使用中</option>
+              <option value="已完成">已完成</option>
+              <option value="已取消">已取消</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label" for="mDate">预约日期</label>
+            <select class="form-select" id="mDate"><option value="">全部日期</option></select>
+          </div>
+          <div class="col-12 col-md-1 d-flex align-items-end">
+            <button type="button" class="btn btn-outline-brand btn-sm w-100" id="btnClearFilter" title="清空筛选">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ 记录表格 ============================ -->
+    <section class="card-soft">
+      <div class="card-head">
+        <h2><i class="bi bi-table text-primary"></i> 预约记录列表</h2>
+        <div class="fs-13 text-muted-2" id="mSummary">正在统计…</div>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-wrap" id="tableWrap"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="app-footer">
+  <div class="container">
+    <div class="foot-line">
+      <div>图书馆自习室信息与数据展示中心 · 软件开发综合实践期末大作业</div>
+      <div>初始数据：<code>data/reservations.json</code> · 修改结果：<code>localStorage</code></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================ 新增 / 编辑 弹窗 ============================ -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius:14px;border:none;">
+      <div class="modal-header" style="background:#f7f9fc;border-bottom:1px solid var(--line);">
+        <h5 class="modal-title fw-bold" id="editModalTitle">新增预约</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm" novalidate>
+          <input type="hidden" id="fId">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="fRoom">自习室 <span class="text-danger">*</span></label>
+              <select class="form-select" id="fRoom" required>
+                <option value="">请选择自习室</option>
+              </select>
+              <div class="invalid-feedback" id="errRoom">请选择一间自习室</div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="fSeat">座位号</label>
+              <input type="text" class="form-control" id="fSeat" placeholder="如：A-24" maxlength="12">
+              <div class="form-text fs-12">不填写时系统自动生成临时座位号</div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="fStudent">预约人姓名 <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="fStudent" placeholder="请输入姓名" maxlength="10" required>
+              <div class="invalid-feedback" id="errStudent">姓名不能为空，且长度不超过 10 个字符</div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="fStudentNo">学号 <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="fStudentNo" placeholder="8 位数字，如 20230101"
+                     maxlength="8" inputmode="numeric" required>
+              <div class="invalid-feedback" id="errStudentNo">学号必须是 8 位数字</div>
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="fDate">预约日期 <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="fDate" required>
+              <div class="invalid-feedback" id="errDate">请选择预约日期</div>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label" for="fStart">开始时间 <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" id="fStart" required>
+              <div class="invalid-feedback" id="errStart">请选择开始时间</div>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label" for="fEnd">结束时间 <span class="text-danger">*</span></label>
+              <input type="time" class="form-control" id="fEnd" required>
+              <div class="invalid-feedback" id="errEnd">结束时间必须晚于开始时间</div>
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="fStatus">状态</label>
+              <select class="form-select" id="fStatus">
+                <option value="已预约">已预约</option>
+                <option value="使用中">使用中</option>
+                <option value="已完成">已完成</option>
+                <option value="已取消">已取消</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--line);">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-brand" id="btnSave"><i class="bi bi-check2"></i> 保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ 删除确认弹窗 ============================ -->
+<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" style="border-radius:14px;border:none;">
+      <div class="modal-header" style="border-bottom:1px solid var(--line);">
+        <h5 class="modal-title fw-bold" id="delModalTitle">确认删除</h5>
+      </div>
+      <div class="modal-body" id="delBody">确定要删除这条预约记录吗？</div>
+      <div class="modal-footer" style="border-top:1px solid var(--line);">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-danger btn-sm" id="btnDelConfirm"><i class="bi bi-trash3"></i> 确认删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="libs/jquery.min.js"></script>
+<script src="libs/bootstrap.bundle.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/manage.js"></script>
+</body>
+</html>

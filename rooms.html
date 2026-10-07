@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="图书馆自习室信息与数据展示中心 - 自习室查询与筛选">
+  <title>自习室查询 | 图书馆自习室信息与数据展示中心</title>
+  <link rel="stylesheet" href="libs/bootstrap.min.css">
+  <link rel="stylesheet" href="libs/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-badge"><i class="bi bi-book-half"></i></span>
+      <span>自习室信息中心<span class="brand-sub">CAMPUS STUDY ROOM</span></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="展开导航菜单">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-speedometer2"></i>数据总览</a></li>
+        <li class="nav-item"><a class="nav-link active" href="rooms.html"><i class="bi bi-search"></i>自习室查询</a></li>
+        <li class="nav-item"><a class="nav-link" href="manage.html"><i class="bi bi-calendar2-check"></i>预约管理</a></li>
+        <li class="nav-item"><a class="nav-link" href="three-d/scene.html"><i class="bi bi-badge-3d"></i>三维展示</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-end gap-2">
+        <div>
+          <h1><i class="bi bi-search text-primary"></i> 自习室查询</h1>
+          <p>按楼宇、类型、楼层和设施条件筛选自习室，并可按空闲座位数排序，快速定位当前位置最适合的自习地点。</p>
+        </div>
+        <div class="text-lg-end">
+          <div class="fs-13 text-muted-2">数据更新时间</div>
+          <div class="fw-bold" id="updateTime">--</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container py-4">
+    <div id="alertHost" class="mb-3"></div>
+
+    <!-- ============================ 筛选区 ============================ -->
+    <section class="card-soft mb-3">
+      <div class="card-head">
+        <h2><i class="bi bi-funnel text-primary"></i> 筛选条件</h2>
+        <button type="button" class="btn btn-outline-brand btn-sm" id="btnReset">
+          <i class="bi bi-arrow-counterclockwise"></i> 重置条件
+        </button>
+      </div>
+      <div class="card-body">
+        <form class="row g-3" id="filterForm" autocomplete="off">
+          <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label" for="kw">关键词搜索</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="bi bi-search text-muted-2"></i></span>
+              <input type="search" class="form-control border-start-0" id="kw"
+                     placeholder="如：考研 / 电子 / 24小时" maxlength="20">
+            </div>
+            <div class="form-text fs-12">支持自习室名称、楼宇、类型模糊匹配</div>
+          </div>
+          <div class="col-6 col-md-6 col-lg-2">
+            <label class="form-label" for="fBuilding">楼宇</label>
+            <select class="form-select" id="fBuilding">
+              <option value="">全部楼宇</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-6 col-lg-2">
+            <label class="form-label" for="fType">自习区类型</label>
+            <select class="form-select" id="fType">
+              <option value="">全部类型</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-6 col-lg-2">
+            <label class="form-label" for="fFloor">楼层</label>
+            <select class="form-select" id="fFloor">
+              <option value="">全部楼层</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-6 col-lg-3">
+            <label class="form-label" for="fSort">排序方式</label>
+            <select class="form-select" id="fSort">
+              <option value="available-desc">空闲座位：多 → 少</option>
+              <option value="rate-asc">占用率：低 → 高</option>
+              <option value="rate-desc">占用率：高 → 低</option>
+              <option value="name-asc">名称：A → Z</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label d-block">快捷条件</label>
+            <div class="chip-group" id="chipGroup">
+              <span class="chip active" data-chip="all">全部分类</span>
+              <span class="chip" data-chip="available">仅看有空位</span>
+              <span class="chip" data-chip="socket">带电源插座</span>
+              <span class="chip" data-chip="quiet">安静（安静度 ≥ 4）</span>
+              <span class="chip" data-chip="ac">有空调</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============================ 结果区 ============================ -->
+    <section class="card-soft">
+      <div class="card-head">
+        <h2><i class="bi bi-list-ul text-primary"></i> 查询结果</h2>
+        <div class="fs-13 text-muted-2" id="resultSummary">正在统计…</div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3" id="roomList"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="app-footer">
+  <div class="container">
+    <div class="foot-line">
+      <div>图书馆自习室信息与数据展示中心 · 软件开发综合实践期末大作业</div>
+      <div>数据来源：<code>data/rooms.json</code>（模拟数据）</div>
+    </div>
+  </div>
+</footer>
+
+<script src="libs/jquery.min.js"></script>
+<script src="libs/bootstrap.bundle.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/rooms.js"></script>
+</body>
+</html>

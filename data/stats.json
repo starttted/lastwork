@@ -1,0 +1,44 @@
+{
+  "updateTime": "2026-10-07 20:30",
+  "source": "图书馆座位管理系统（模拟数据）",
+  "summary": {
+    "totalSeats": 1280,
+    "usedSeats": 906,
+    "availableSeats": 374,
+    "occupancyRate": 70.8,
+    "roomCount": 15,
+    "buildingCount": 3,
+    "todayVisits": 4215,
+    "avgStudyHours": 3.6
+  },
+  "hourlyTrend": {
+    "labels": ["07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"],
+    "values": [186, 402, 658, 806, 742, 468, 590, 858, 921, 906, 664, 552, 812, 906, 776, 412]
+  },
+  "floorOccupancy": [
+    { "floor": "1F", "seats": 340, "used": 239, "rate": 70.3 },
+    { "floor": "2F", "seats": 532, "used": 375, "rate": 70.5 },
+    { "floor": "3F", "seats": 288, "used": 180, "rate": 62.5 },
+    { "floor": "4F", "seats": 120, "used": 112, "rate": 93.3 }
+  ],
+  "typeDistribution": [
+    { "name": "开放自习区", "seats": 660, "used": 471, "rate": 71.4 },
+    { "name": "安静自习区", "seats": 400, "used": 314, "rate": 78.5 },
+    { "name": "电子阅览区", "seats": 140, "used": 86, "rate": 61.4 },
+    { "name": "研讨协作区", "seats": 80, "used": 35, "rate": 43.8 }
+  ],
+  "weeklyVisits": {
+    "labels": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+    "values": [3820, 4015, 4260, 4188, 3962, 3120, 3284]
+  },
+  "roomRank": [
+    { "name": "主馆四层·考研专区", "rate": 93.3 },
+    { "name": "教学楼C座·24小时自习室", "rate": 92.9 },
+    { "name": "教学楼C座·自习教室 202", "rate": 86.7 },
+    { "name": "主馆一层·报刊阅览室", "rate": 80.0 },
+    { "name": "主馆一层·开放自习区", "rate": 76.7 },
+    { "name": "主馆二层·研讨间 A", "rate": 75.0 },
+    { "name": "主馆二层·综合自习区", "rate": 72.5 },
+    { "name": "主馆二层·电子阅览室", "rate": 71.3 }
+  ]
+}
